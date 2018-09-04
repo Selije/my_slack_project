@@ -1,18 +1,18 @@
 defmodule AppuniteRec do
-  @moduledoc """
-  Documentation for AppuniteRec.
-  """
 
-  @doc """
-  Hello world.
+    def send_notify(name, version) do
+        str_message = create_message(name, version)
+        message_to_json(str_message)
+    end
 
-  ## Examples
+    def create_message(name, version) do
+        "Project #{name} in version #{version} has just started on the server."
+    end
 
-      iex> AppuniteRec.hello()
-      :world
+    def message_to_json(str_message) do
+        Poison.encode!(%{"channel" => "C061EG9SL", "text" => str_message })  #TODO Change channel
+    end
 
-  """
-  def hello do
-    :world
-  end
+    
+
 end
