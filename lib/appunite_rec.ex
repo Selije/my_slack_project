@@ -4,6 +4,7 @@ defmodule AppuniteRec do
         str_message = create_message(name, version)
         json_message = message_to_json(str_message)
         send_to_slack(json_message)
+        save_to_file(name, version)
     end
 
     def create_message(name, version) do
@@ -16,12 +17,13 @@ defmodule AppuniteRec do
 
     def send_to_slack(json_message) do
         HTTPoison.start
-        HTTPoison.post "https://slack.com/api/chat.postMessage", json_message, [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{my_secret_token}"}]
+        HTTPoison.post "https://slack.com/api/chat.postMessage", json_message, [{"Content-Type", "application/json"}, {"Authorization", "Bearer {secret_token}"}]
     end
 
-    def save_to_file(json_message) do
-        {:ok, file} = File.open "message_log", [:write]
-        IO.binwrite file, json_message
+    def save_to_file(name, version) do
+        {:ok, file} = File.open "messages_log", [:append]
+        record = "#{name}, #{version} \n"
+        IO.binwrite file, record
         File.close file
     end
 
