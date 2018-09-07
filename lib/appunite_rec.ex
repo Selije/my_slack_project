@@ -19,5 +19,10 @@ defmodule AppuniteRec do
         HTTPoison.post "https://slack.com/api/chat.postMessage", json_message, [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{my_secret_token}"}]
     end
 
+    def save_to_file(json_message) do
+        {:ok, file} = File.open "message_log", [:write]
+        IO.binwrite file, json_message
+        File.close file
+    end
 
 end
