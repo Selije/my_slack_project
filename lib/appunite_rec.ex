@@ -22,7 +22,8 @@ defmodule AppuniteRec do
 
     def save_to_file(name, version) do
         {:ok, file} = File.open "messages_log", [:append]
-        record = "#{name}, #{version} \n"
+        datetime = Timex.now |> Timex.format!("%Y-%m-%d %H:%M", :strftime)
+        record = "#{name}, #{version}, #{datetime} \n"
         IO.binwrite file, record
         File.close file
     end
