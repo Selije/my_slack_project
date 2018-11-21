@@ -1,4 +1,4 @@
-defmodule AppuniteRec do
+defmodule SlackNotifier do
 
     def send_notify(name, version) do
         str_message = create_message(name, version)
@@ -17,12 +17,13 @@ defmodule AppuniteRec do
 
     def send_to_slack(json_message) do
         HTTPoison.start
-        HTTPoison.post "https://slack.com/api/chat.postMessage", json_message, [{"Content-Type", "application/json"}, {"Authorization", "Bearer {secret_token}"}]
+        HTTPoison.post "https://slack.com/api/chat.postMessage", json_message, [{"Content-Type", "application/json"}, {"Authorization", "Bearer {my_very_secret_code}"}]
     end
 
     def save_to_file(name, version) do
         {:ok, file} = File.open "messages_log", [:append]
-        datetime = Timex.now |> Timex.format!("%Y-%m-%d %H:%M", :strftime)
+        {:ok, datetime} = Timex.now |> Timex.format("%Y-%m-%d %H:%M", :strftime)
+#        datetime = Timex.now |> Timex.format!("%Y-%m-%d %H:%M", :strftime)
         record = "#{name}, #{version}, #{datetime} \n"
         IO.binwrite file, record
         File.close file

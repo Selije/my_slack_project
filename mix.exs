@@ -1,9 +1,9 @@
-defmodule AppuniteRec.MixProject do
+defmodule SlackNotifier.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :appunite_rec,
+      app: :my_slack_project,
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
